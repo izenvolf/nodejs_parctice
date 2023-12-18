@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>내용</th>
+                <th>작성자</th>
+                <th>작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>제목 1</td>
+                <td>내용 1</td>
+                <td>작성자1</td>
+                <td>2023-01-01</td>
+            </tr>
+            <tr>
+                <td>제목 2</td>
+                <td>내용 2</td>
+                <td>작성자2</td>
+                <td>2023-01-02</td>
+            </tr>
+            <!-- 기존 게시물들 -->
+        </tbody>
+    </table>
+
+    <form id="postForm">
+        <h2>새 글 작성</h2>
+        <label for="title">제목:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" rows="4" required></textarea>
+        <br>
+        <label for="author">작성자:</label>
+        <input type="text" id="author" name="author" required>
+        <br>
+        <label for="date">작성일:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <button type="button" onclick="addPost()">글 작성</button>
+    </form>
+
+    <script>
+        function addPost() {
+            var title = document.getElementById('title').value;
+            var content = document.getElementById('content').value;
+            var author = document.getElementById('author').value;
+            var date = document.getElementById('date').value;
+
+            if (title && content && author && date) {
+                var table = document.querySelector('table tbody');
+
+                var newRow = table.insertRow(table.rows.length);
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+
+                cell1.textContent = title;
+                cell2.textContent = content;
+                cell3.textContent = author;
+                cell4.textContent = date;
+
+                // 글 작성 후 입력 필드 초기화
+                document.getElementById('title').value = '';
+                document.getElementById('content').value = '';
+                document.getElementById('author').value = '';
+                document.getElementById('date').value = '';
+            } else {
+                alert('제목, 내용, 작성자, 작성일을 모두 입력하세요.');
+            }
+        }
+    </script>
+</body>
+</html>
