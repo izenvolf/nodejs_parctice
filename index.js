@@ -26,7 +26,7 @@ var app = http.createServer(function(request, response){
                     console.log(error);
                 }
                 //console.log(results);
-                var index = main.main(results);
+                var index = main.main(main.list(results));
                 response.writeHead(200);
                 response.end(index)
             });      
@@ -40,7 +40,7 @@ var app = http.createServer(function(request, response){
                 console.log(error);
             }
             console.log("results : " +results+ "/"+ fields);
-            var index = main.detail(results);
+            var index = main.main(main.detail(results));
             response.writeHead(200);
             response.end(index);
         });  
