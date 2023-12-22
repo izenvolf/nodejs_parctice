@@ -39,13 +39,50 @@ var app = http.createServer(function(request, response){
             if(error){
                 console.log(error);
             }
-            console.log("results : " +results+ "/"+ fields);
             var index = main.main(main.detail(results));
             response.writeHead(200);
             response.end(index);
         });  
-        
-        
+    }else if(pathname === '/create'){
+        var data= '';
+        request.on('data', (form) => {
+            data = data + form;
+        });
+        request.on('end', () => {
+            var post = qs.parse(data);
+            var boNo = 0;
+            connection.query(`SELECT MAX(boNo)+1 boNo FROM board`, (error, results, fields) => {
+                if(error){
+                    console.log(error);
+                }
+                boNo = results[0].boNo;
+
+                console.log(post);
+                connection.query(`
+                INSERT INTO board (boNo, boTitle, boContent, boDate, boWriter) 
+                VALUES ( ${boNo} , '${post.title}', '${post.content}', SYSDATE(), '${post.writer}' )
+                 ` , (error, results, fiedls) => {
+                    if(error){
+                        console.log(error);
+                    }
+                    response.writeHead(302, {Location : '/'});
+                    response.end();
+                });
+            });
+
+        });
+    }else if(pathname === '/delete'){
+        var query = queryData.query;
+        var boNo = qs.parse(query).boNo;
+        console.log(boNo);
+        connection.query(`DELETE FROM board WHERE boNo=${boNo}`, (error, results, fields) => {
+            if(error){
+                console.log(error);
+            }
+            response.writeHead(302, {Location : '/'});
+            response.end();
+        });
+
     }
 });
 app.listen(8000);
